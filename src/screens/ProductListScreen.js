@@ -8,9 +8,13 @@ import { Context as ProductDetailContext } from '../context/ProductDetailContext
 import Spacer from '../components/Spacer';
 import { initsocket, client } from '../api/SocketConfig'
 import { Header, Colors } from 'react-native/Libraries/NewAppScreen';
-import BackgroundFetchScreen from './components/BackgroundFetchScreen';
-
+import * as BackgroundFetch from 'expo-background-fetch';
+import * as TaskManager from 'expo-task-manager';
 import * as Notifications from 'expo-notifications';
+const BACKGROUND_FETCH_TASK = 'background-fetch';
+
+const content = { title: 'I am a one, hasty notification.' };
+const content2 = { title: 'exsecuted background fetch' };
 
 Notifications.setNotificationHandler({
   handleNotification: async () => {
@@ -22,6 +26,10 @@ Notifications.setNotificationHandler({
   },
 });
 
+
+
+
+
 const Item = ({ item, onPress, backgroundColor, textColor }) => (
   <TouchableOpacity onPress={onPress} style={[styles.item]}>
     <Text style={[styles.title, textColor]}>{item.name}</Text>
@@ -31,10 +39,25 @@ const Item = ({ item, onPress, backgroundColor, textColor }) => (
 //client.io.on("disconnect", console.log('try to reconnect') );
 
 const ProductListScreen = ({ navigation }) => {
-
-
   const { state, fetchUserProducts } = useContext(ProductDetailContext);
   const [selectedId, setSelectedId] = useState(null);
+
+  TaskManager.defineTask(BACKGROUND_FETCH_TASK, async () => {
+    const now = Date.now();
+    console.log(`Got background fetch call at date: ${new Date(now).toISOString()}`);
+
+    const fetch = fetchUserProducts();
+    const receivedNewData = state;
+
+
+    console.log(`exsecuted background fetch call at date: ${new Date(now).toISOString()}`);
+    Notifications.scheduleNotificationAsync({ content, trigger: null });
+    // Be sure to return the successful result type!
+
+    return BackgroundFetch.Result.NewData;
+
+  });
+
 
   useEffect(() => {
     initsocket();
@@ -66,9 +89,6 @@ const ProductListScreen = ({ navigation }) => {
             extraData={selectedId}
           />
         </SafeAreaView>
-      </>
-      <>
-        <BackgroundFetchScreen />
       </>
     </>
   );

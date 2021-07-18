@@ -1,6 +1,5 @@
 import { url } from './Config';
 import io from 'socket.io-client';
-import { useEffect } from 'react';
 
 
 export let client;

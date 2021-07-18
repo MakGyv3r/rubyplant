@@ -1,20 +1,30 @@
 
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Button, StatusBar } from 'react-native';
+import { CheckBox } from 'react-native-elements'
 import * as BackgroundFetch from 'expo-background-fetch';
 import * as TaskManager from 'expo-task-manager';
 import * as Notifications from 'expo-notifications';
-//import { Notifications, Permissions } from "expo";
+
 const BACKGROUND_FETCH_TASK = 'background-fetch';
 
 const content = { title: 'I am a one, hasty notification.' };
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => {
+    return {
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+      shouldSetBadge: true,
+    };
+  },
+});
 
 // 1. Define the task by providing a name and the function that should be executed
 // Note: This needs to be called in the global scope (e.g outside of your React components)
 TaskManager.defineTask(BACKGROUND_FETCH_TASK, async () => {
   const now = Date.now();
   console.log(`Got background fetch call at date: ${new Date(now).toISOString()}`);
-
   Notifications.scheduleNotificationAsync({ content, trigger: null });
 
   // Be sure to return the successful result type!
@@ -23,26 +33,24 @@ TaskManager.defineTask(BACKGROUND_FETCH_TASK, async () => {
 
 // 2. Register the task at some point in your app by providing the same name, and some configuration options for how the background fetch should behave
 // Note: This does NOT need to be in the global scope and CAN be used in your React components!
-async function registerBackgroundFetchAsync() {
-  return BackgroundFetch.registerTaskAsync(BACKGROUND_FETCH_TASK, {
+const registerBackgroundFetchAsync = async () => {
+  return await BackgroundFetch.registerTaskAsync(BACKGROUND_FETCH_TASK, {
     minimumInterval: 1, // 15 minutes
     stopOnTerminate: false, // android only,
     startOnBoot: true, // android only
-    delay: 1000,
-    periodic: true,
   });
 }
 
 // 3. (Optional) Unregister tasks by specifying the task name
 // This will cancel any future background fetch calls that match the given name
 // Note: This does NOT need to be in the global scope and CAN be used in your React components!
-async function unregisterBackgroundFetchAsync() {
-  return BackgroundFetch.unregisterTaskAsync(BACKGROUND_FETCH_TASK);
+const unregisterBackgroundFetchAsync = async () => {
+  return await BackgroundFetch.unregisterTaskAsync(BACKGROUND_FETCH_TASK);
 }
 
 const BackgroundFetchScreen = () => {
   const [isRegistered, setIsRegistered] = useState(false);
-  const [status, setStatus] = useState(null);
+  const [status, setStatus] = useState(false);
 
 
 
@@ -58,7 +66,6 @@ const BackgroundFetchScreen = () => {
   };
 
   const toggleFetchTask = async () => {
-
     if (isRegistered) {
       await unregisterBackgroundFetchAsync();
     } else {
@@ -82,10 +89,16 @@ const BackgroundFetchScreen = () => {
         </Text>
       </View>
       <View style={styles.textContainer}></View>
-      <Button
+      <CheckBox
+        center
         title={isRegistered ? 'Unregister BackgroundFetch task' : 'Register BackgroundFetch task'}
+        checked={isRegistered}
         onPress={toggleFetchTask}
       />
+      {/* <Button
+        title={isRegistered ? 'Unregister BackgroundFetch task' : 'Register BackgroundFetch task'}
+        onPress={toggleFetchTask}
+      /> */}
     </>
   );
 }

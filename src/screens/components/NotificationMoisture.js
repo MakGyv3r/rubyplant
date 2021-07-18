@@ -18,7 +18,6 @@ const NotificationMoisture = ({ id }) => {
     if (status == null)
       setNotificationChecked(false);
     else setNotificationChecked(status === 'true' ? true : false);
-
   };
 
   const writeItemToStorage = async () => {
@@ -39,7 +38,6 @@ const NotificationMoisture = ({ id }) => {
         }
         }
       />
-
     </>
   );
 };
