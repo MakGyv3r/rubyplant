@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState, } from 'react';
 import { Text, StyleSheet, TouchableOpacity, Switch, SafeAreaView, StatusBar, ActivityIndicator } from 'react-native';
-import { Context as ProductContext } from '../../context/ProductDetailContext'
-import { client } from '../../api/SocketConfig'
+import { Context as ProductContext } from '../../../context/ProductDetailContext'
+import { client } from '../../../api/SocketConfig'
 import { NavigationEvents } from 'react-navigation';
 
 const IrrigateMode = ({ id }) => {

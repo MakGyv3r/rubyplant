@@ -4,11 +4,12 @@ import { CheckBox } from 'react-native-elements'
 import * as BackgroundFetch from 'expo-background-fetch';
 import * as TaskManager from 'expo-task-manager';
 import * as Notifications from 'expo-notifications';
+
 const BACKGROUND_FETCH_TASK = 'background-fetch';
 
 const registerBackgroundFetchAsync = async () => {
   return await BackgroundFetch.registerTaskAsync(BACKGROUND_FETCH_TASK, {
-    minimumInterval: 1, // 60*15 15 minutes
+    minimumInterval: 1.5, // 60*15 15 minutes
     stopOnTerminate: false, // android only,
     startOnBoot: true, // android only
   });

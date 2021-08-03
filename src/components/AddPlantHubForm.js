@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
-import { Text, Button, Input,} from 'react-native-elements';
+import { Text, Button, Input, } from 'react-native-elements';
 import Spacer from './Spacer';
 
-const AddPlantHub = ({ headerText, errorMessage, onSubmit, submitButtonText ,onLoading}) => {
+const AddPlantHub = ({ headerText, errorMessage, onSubmit, submitButtonText, onLoading }) => {
   const [hubCatNumber, setHubCatNumber] = useState('');
   const [productCatNumber, setProductCatNumber] = useState('');
+  const [PlantName, setPlantName] = useState('');
   return (
     <>
       <Spacer>
@@ -21,17 +22,30 @@ const AddPlantHub = ({ headerText, errorMessage, onSubmit, submitButtonText ,onL
           autoCapitalize="none"
           autoCorrect={false}
         />
-      ) : null} 
+      ) : null}
       {submitButtonText === 'Add Plant' ? (
-        <Input
-          //label="Plant Number"
-          placeholder="Plant Number"
-          value={productCatNumber}
-          onChangeText={setProductCatNumber}
-          autoCapitalize="none"
-          autoCorrect={false}
-        />
-      ): null} 
+        <>
+          <>
+            <Input
+              //label="Plant Number"
+              placeholder="Plant Number"
+              value={productCatNumber}
+              onChangeText={setProductCatNumber}
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
+          </>
+          <>
+            <Input
+              //label="Plant Number"
+              placeholder="Plant name"
+              value={PlantName}
+              onChangeText={setPlantName}
+              autoCapitalize="none"
+              autoCorrect={false}
+            /></>
+        </>
+      ) : null}
 
       {errorMessage ? (
         <Text style={styles.errorMessage}>{errorMessage}</Text>
@@ -46,15 +60,14 @@ const AddPlantHub = ({ headerText, errorMessage, onSubmit, submitButtonText ,onL
             onPress={() => onSubmit({ hubCatNumber })}
           />
         ) : (
-          <Button
-            titleStyle={{ color: 'pink' }}
-            //style={styles.button}
-            title={submitButtonText}
-            color="red"
-            onPress={() => {onSubmit({ productCatNumber}),onLoading()}}
-            
-          />
-        )}
+            <Button
+              titleStyle={{ color: 'pink' }}
+              //style={styles.button}
+              title={submitButtonText}
+              color="red"
+              onPress={() => { onSubmit({ productCatNumber, PlantName }), onLoading() }}
+            />
+          )}
       </Spacer>
     </>
   );

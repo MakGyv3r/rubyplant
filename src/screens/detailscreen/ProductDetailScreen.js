@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, } from 'react-native';
 import IrrigateMode from './components/IrrigateMode'
 import SensorDataShow from './components/SensorDataShow'
-import NotificationMoisture from './components/NotificationMoisture'
+import NotificationMoisture from '../components/NotificationMoisture'
 //import BackgroundFetch from "react-native-background-fetch";
 import {
   Header,

@@ -6,7 +6,7 @@ import { setNavigator } from './src/navigationRef';
 import AccountScreen from './src/screens/accountscreen/AccountScreen';
 import SigninScreen from './src/screens/SigninScreen';
 import SignupScreen from './src/screens/SignupScreen';
-import ProductDetailScreen from './src/screens/ProductDetailScreen';
+import ProductDetailScreen from './src/screens/detailscreen/ProductDetailScreen';
 import ProductListScreen from './src/screens/ProductListScreen';
 import AddProductScreen from './src/screens/AddProductScreen';
 import ResolveAuthScreen from './src/screens/ResolveAuthScreen';

@@ -6,10 +6,10 @@ import {
   Button,
   TouchableOpacity, SafeAreaView, View, ActivityIndicator
 } from 'react-native';
-import { client } from '../../api/SocketConfig'
+import { client } from '../../../api/SocketConfig'
 import { NavigationEvents } from 'react-navigation';
-import { Context as ProductDataContext } from '../../context/ProductDetailContext'
-import DynamicProgressCircle from '../../components/DynamicProgressCircle';
+import { Context as ProductDataContext } from '../../../context/ProductDetailContext'
+import DynamicProgressCircle from './DynamicProgressCircle';
 
 const SensorDataShow = ({ id }) => {
 
