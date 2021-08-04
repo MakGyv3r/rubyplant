@@ -3,17 +3,19 @@ import {
   FlatList, TouchableOpacity, StyleSheet, Text, SafeAreaView, StatusBar, View, ScrollView,
 } from 'react-native';
 import { NavigationEvents } from 'react-navigation';
-import { Context as ProductDetailContext } from '../context/ProductDetailContext';
+import { Context as ProductDetailContext } from '../../context/ProductDetailContext';
 //import { Context as SocketContext } from '../context/SocketContext';
-import Spacer from '../components/Spacer';
-import { initsocket, client } from '../api/SocketConfig'
+import Spacer from '../../components/Spacer';
+import { initsocket, client } from '../../api/SocketConfig'
 import { Header, Colors } from 'react-native/Libraries/NewAppScreen';
 import * as BackgroundFetch from 'expo-background-fetch';
 import * as TaskManager from 'expo-task-manager';
 import * as Notifications from 'expo-notifications';
+import Notifications1 from './component/Notifications'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const BACKGROUND_FETCH_TASK = 'background-fetch';
-let content = { title: `notfication test`, body: `` };
+let content = { title: `notfication 1`, body: `` };
+let content2 = { title: `notfication 2`, body: `` };
 
 const setObjectValue = async (value) => {
   const jsonValue = JSON.stringify(value);
@@ -32,6 +34,8 @@ const getMyObject = async (key) => {
   });
 };
 
+
+
 Notifications.setNotificationHandler({
   handleNotification: async () => {
     return {
@@ -43,13 +47,13 @@ Notifications.setNotificationHandler({
 });
 
 
-let value;
 TaskManager.defineTask(BACKGROUND_FETCH_TASK, async () => {
   const now = Date.now();
   console.log(`Got background fetch call at date: ${new Date(now).toISOString()}`);
   getMyObject('state');
   console.log(content);
   Notifications.scheduleNotificationAsync({ content, trigger: null });
+  Notifications1(content2);
   // Be sure to return the successful result type!
   return BackgroundFetch.Result.NewData;
 });
