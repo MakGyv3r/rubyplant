@@ -10,50 +10,52 @@ import { initsocket, client } from '../../api/SocketConfig'
 import { Header, Colors } from 'react-native/Libraries/NewAppScreen';
 import * as BackgroundFetch from 'expo-background-fetch';
 import * as TaskManager from 'expo-task-manager';
-import * as Notifications from 'expo-notifications';
-import Notifications1 from './component/Notifications'
+//import * as Notifications from 'expo-notifications';
+import Notifications from './component/Notifications'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const BACKGROUND_FETCH_TASK = 'background-fetch';
-let content = { title: `notfication 1`, body: `` };
-let content2 = { title: `notfication 2`, body: `` };
+let content = { title: ``, body: `` };
 
 const setObjectValue = async (value) => {
   const jsonValue = JSON.stringify(value);
   await AsyncStorage.setItem('state', jsonValue);
 };
 
-const getMyObject = async (key) => {
-  const jsonValue = await AsyncStorage.getItem(key);
+//test
+// const getMyObject = async (key) => {
+//   const jsonValue = await AsyncStorage.getItem(key);
+//   // return jsonValue != null ? JSON.parse(jsonValue) : null;
+//   const value = JSON.parse(jsonValue);
+//   content1 = { title: `notfication test`, body: `` }
+//   value.data.forEach(element => {
+//     if (element.autoIrrigateState === false)
+//       // content = { title: `${content.title} \n autoIrrigateState for ${element.name} is ${element.autoIrrigateState}` }
+//       content.body = `${content.body} \n autoIrrigateState for ${element.name} is ${element.autoIrrigateState}`;
+//   });
+// };
+
+const waterState = async () => {
+  const jsonValue = await AsyncStorage.getItem('state');
   // return jsonValue != null ? JSON.parse(jsonValue) : null;
   const value = JSON.parse(jsonValue);
-  content = { title: `notfication test`, body: `` }
   value.data.forEach(element => {
-    if (element.autoIrrigateState === false)
-      // content = { title: `${content.title} \n autoIrrigateState for ${element.name} is ${element.autoIrrigateState}` }
-      content.body = `${content.body} \n autoIrrigateState for ${element.name} is ${element.autoIrrigateState}`;
+    if (element.waterSensor.waterState === false) {
+      content = { title: `${element.name} Warning!!! no water!`, body: `Please fill my water tank with water!` };
+      Notifications(content);
+    }
   });
 };
-
-
-
-Notifications.setNotificationHandler({
-  handleNotification: async () => {
-    return {
-      shouldShowAlert: true,
-      shouldPlaySound: true,
-      shouldSetBadge: true,
-    };
-  },
-});
 
 
 TaskManager.defineTask(BACKGROUND_FETCH_TASK, async () => {
   const now = Date.now();
   console.log(`Got background fetch call at date: ${new Date(now).toISOString()}`);
-  getMyObject('state');
-  console.log(content);
-  Notifications.scheduleNotificationAsync({ content, trigger: null });
-  Notifications1(content2);
+  //getMyObject('state');
+  waterState();
+  wateDrinkingState();
+  // console.log(content1);
+  // Notifications1(content1);
+  // Notifications2(content2);
   // Be sure to return the successful result type!
   return BackgroundFetch.Result.NewData;
 });
@@ -73,16 +75,10 @@ const ProductListScreen = ({ navigation }) => {
   const { state, fetchUserProducts } = useContext(ProductDetailContext);
   const [selectedId, setSelectedId] = useState(null);
 
+  const wateDrinkingState = async () => (
+    console.log('test test test')
+  )
 
-  // const readItemFromStorage = async () => {
-  //   const item = await getItem();
-  //   setValue(item);
-  // };
-
-  // const writeItemToStorage = async (newValue) => {
-  //   await setItem(newValue.toString());
-  //   setValue(newValue.toString());
-  // };
 
 
 
