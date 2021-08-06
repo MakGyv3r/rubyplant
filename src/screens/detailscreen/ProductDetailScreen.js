@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, } from 'react-native';
 import IrrigateMode from './components/IrrigateMode'
 import SensorDataShow from './components/SensorDataShow'
-import NotificationMoisture from '../components/NotificationMoisture'
 import {
   Header,
   Colors
@@ -10,13 +9,13 @@ import {
 
 const ProductDetailScreen = ({ navigation }) => {
   const _id = navigation.getParam('_id');
-
-
+  const nav = navigation;
 
   return (
     <>
       <>
-        <SensorDataShow id={_id} />
+        <SensorDataShow navigation={nav} id={_id} />
+
       </>
       <>
         <IrrigateMode

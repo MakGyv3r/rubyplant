@@ -7,11 +7,12 @@ import {
   TouchableOpacity, SafeAreaView, View, ActivityIndicator
 } from 'react-native';
 import { client } from '../../../api/SocketConfig'
-import { NavigationEvents } from 'react-navigation';
 import { Context as ProductDataContext } from '../../../context/ProductDetailContext'
 import DynamicProgressCircle from './DynamicProgressCircle';
+import { NavigationEvents } from 'react-navigation';
 
-const SensorDataShow = ({ id }) => {
+
+const SensorDataShow = ({ navigation, id }) => {
 
   const { state } = useContext(ProductDataContext);
   const [isEnabled, setIsEnabled] = useState(false);
@@ -79,8 +80,7 @@ const SensorDataShow = ({ id }) => {
                 <TouchableOpacity
                   key="Moisture Chart"
                   style={styles.buttonChart}
-                  onPress={() => {
-                  }}
+                  onPress={() => { navigation.navigate('Chart') }}
                 >
                   <Text>
                     Go To Moisture Chart
