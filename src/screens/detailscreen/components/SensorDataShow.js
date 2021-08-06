@@ -61,15 +61,34 @@ const SensorDataShow = ({ id }) => {
 
   return (
     <>
+
       <NavigationEvents onWillFocus={() => { }} />
       {stateData.muisterSensor !== null && (
         <>
           <Text style={{ fontSize: 28 }}>Moisture  sensor data:</Text>
-          <DynamicProgressCircle
-            changingValues={{
-              Percent: parseInt(stateData.muisterSensor),
-            }}
-          />
+          <View style={[styles.fixToText, styles.container]}>
+            <>
+              <DynamicProgressCircle
+                changingValues={{
+                  Percent: parseInt(stateData.muisterSensor),
+                }}
+              />
+            </>
+            <>
+              <View style={{ padding: 15 }}>
+                <TouchableOpacity
+                  key="Moisture Chart"
+                  style={styles.buttonChart}
+                  onPress={() => {
+                  }}
+                >
+                  <Text>
+                    Go To Moisture Chart
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </>
+          </View>
         </>
       )}
 
@@ -78,14 +97,14 @@ const SensorDataShow = ({ id }) => {
           Light sensor data:
           {
             stateData.lightSensor
-          }
+          }%
         </Text>
       )}
 
 
       {loading === false ?
         <Button
-          title="Get Data"
+          title="Get Sensor Data"
           style={styles.button}
           onPress={() => {
             emitGetData(id), setLoading(true)
@@ -99,30 +118,33 @@ const SensorDataShow = ({ id }) => {
 
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 0,
+    padding: 5,
+  },
   button: {
     alignItems: 'center',
     backgroundColor: '#00CC00',
     padding: 10,
     marginTop: 10,
   },
-  buttonON: {
-    alignItems: 'center',
-    backgroundColor: '#00CC00',
-    padding: 10,
-    marginTop: 10,
+  buttonChart: {
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+    borderRadius: 4,
+    backgroundColor: "coral",
+    alignSelf: "flex-start",
+    marginHorizontal: "1%",
+    marginBottom: 6,
+    minWidth: "48%",
+    textAlign: "center",
+
   },
-  buttonOFF: {
-    alignItems: 'center',
-    backgroundColor: '#DB2828',
-    padding: 10,
-    marginTop: 10,
+  fixToText: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
-  buttonNotOnline: {
-    alignItems: 'center',
-    backgroundColor: '#9B9D9A',
-    padding: 10,
-    marginTop: 10,
-  },
+
   switch: {
     alignItems: 'center',
   },

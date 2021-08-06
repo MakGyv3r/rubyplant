@@ -50,7 +50,7 @@ const BackgroundFetchScreen = () => {
     <>
       <CheckBox
         center
-        title={isRegistered ? 'Unregister BackgroundFetch task' : 'Register BackgroundFetch task'}
+        title={isRegistered ? 'Click Here to stop getting notifications' : 'Click Here to get notifications'}
         checked={isRegistered}
         onPress={toggleFetchTask}
       />

@@ -17,6 +17,7 @@ import { FontAwesome } from '@expo/vector-icons';
 const PlnatListFlow = createStackNavigator({
   ProductList: ProductListScreen,
   ProductDetail: ProductDetailScreen,
+
 });
 PlnatListFlow.navigationOptions = {
   title: 'ProductList',

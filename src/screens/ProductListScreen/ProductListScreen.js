@@ -47,18 +47,9 @@ const waterState = async () => {
 };
 
 
-TaskManager.defineTask(BACKGROUND_FETCH_TASK, async () => {
-  const now = Date.now();
-  console.log(`Got background fetch call at date: ${new Date(now).toISOString()}`);
-  //getMyObject('state');
-  waterState();
-  wateDrinkingState();
-  // console.log(content1);
-  // Notifications1(content1);
-  // Notifications2(content2);
-  // Be sure to return the successful result type!
-  return BackgroundFetch.Result.NewData;
-});
+// state.data.muisterSensor.tests[
+//   state.data.muisterSensor.tests.length - 1
+// ].status
 
 
 const Item = ({ item, onPress, backgroundColor, textColor }) => (
@@ -72,13 +63,33 @@ const Item = ({ item, onPress, backgroundColor, textColor }) => (
 const ProductListScreen = ({ navigation }) => {
   const [value, setValue] = useState('value');
   // const { getItem, setItem } = useAsyncStorage('store');
-  const { state, fetchUserProducts } = useContext(ProductDetailContext);
+  const { state, fetchUserProducts, } = useContext(ProductDetailContext);
+  const { fetchDataPlantProductsUpdates } = useContext(ProductDetailContext);
   const [selectedId, setSelectedId] = useState(null);
 
-  const wateDrinkingState = async () => (
-    console.log('test test test')
-  )
+  const wateDrinkingState = () => {
+    fetchDataPlantProductsUpdates();
+    setObjectValue(state);
+    state.data.forEach(element => {
+      if (element.autoIrrigateState !== true)
+        if (element.waterMotor.state.timeOff)
+          if (Math.floor((new Date(now) - new Date(element.waterMotor.timeOff)) / 60000 / 60 / 24) > 2)
+            if (element.data.muisterSensor.tests[element.data.muisterSensor.tests.length - 1].status < 17) {
+              content = { title: `${element.name}: Warning!`, body: `I don't have enough water. I'm thirsty. I'm sad` };
+              Notifications(content);
+            }
+    });
+  }
 
+
+
+  TaskManager.defineTask(BACKGROUND_FETCH_TASK, async () => {
+    const now = Date.now();
+    console.log(`Got background fetch call at date: ${new Date(now).toISOString()}`);
+    waterState();
+    // wateDrinkingState();
+    return BackgroundFetch.Result.NewData;
+  });
 
 
 
@@ -89,7 +100,7 @@ const ProductListScreen = ({ navigation }) => {
 
   useEffect(() => {
     if (state)
-      setObjectValue(state)
+      setObjectValue(state);
   }, [state]);
 
   const renderItem = ({ item }) => {

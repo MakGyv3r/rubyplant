@@ -44,6 +44,13 @@ const fetchDataPlantProduct = (dispatch) => async (id) => {
   dispatch({ type: 'fetch_data_new', payload: response.data });
 };
 
+const fetchDataPlantProductsUpdates = (dispatch) => async (id) => {
+  const response = await ApiConnect.put(`${URL}/getUserPlantProductsUpdates`,
+    { id },
+  );
+  dispatch({ type: 'fetch_data_new', payload: response.data });
+};
+
 const UpdataResults = (dispatch) => async () => {
   const response = await ApiConnect.get(`${URL}/UpdataResults`);
   console.log('UpdataResults');
@@ -71,6 +78,7 @@ export const { Provider, Context } = createDataContext(
   ProductDetailReducer,
   {
     fetchDataPlantProduct,
+    fetchDataPlantProductsUpdates,
     fetchUserProducts,
     fetchOnePlantProduct,
     UpdataResults,

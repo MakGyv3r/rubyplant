@@ -3,7 +3,6 @@ import { StyleSheet, } from 'react-native';
 import IrrigateMode from './components/IrrigateMode'
 import SensorDataShow from './components/SensorDataShow'
 import NotificationMoisture from '../components/NotificationMoisture'
-//import BackgroundFetch from "react-native-background-fetch";
 import {
   Header,
   Colors
@@ -25,9 +24,6 @@ const ProductDetailScreen = ({ navigation }) => {
         />
       </>
       <>
-        <NotificationMoisture
-          id={_id}
-        />
       </>
     </>
 
