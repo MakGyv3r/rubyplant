@@ -1,72 +1,69 @@
-import React from 'react'
-import {
-  LineChart,
-  BarChart,
-  PieChart,
-  ProgressChart,
-  ContributionGraph,
-  StackedBarChart
-} from "react-native-chart-kit";
+import React, { useContext } from 'react'
+import { Chart, Line, Area, HorizontalAxis, VerticalAxis, ChartDataPoint } from 'react-native-responsive-linechart'
+import { Context as ProductDataContext } from '../../../context/ProductDetailContext'
 import { StyleSheet, View, Text, Dimensions } from 'react-native'
-const screenWidth = Dimensions.get("window").width;
+import moment from 'moment';
 
-const ChartScreen = () => {
-  const chartConfig = {
-    backgroundGradientFrom: "#1E2923",
-    backgroundGradientFromOpacity: 0,
-    backgroundGradientTo: "#08130D",
-    backgroundGradientToOpacity: 0.5,
-    color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
-    strokeWidth: 2, // optional, default 3
-    barPercentage: 0.5,
-    useShadowColorFromDataset: false // optional
-  };
+const ChartScreen = ({ navigation }) => {
+  const { state } = useContext(ProductDataContext);
+  const id = navigation.getParam('_id');
+  const object = state.data.find(({ _id }) => _id === id);
+
+  let dataLightSensorLabels = [];
+  let dataLightSensorData = [];
+  let dataSensor = [];
+  object.lightSensor.tests.forEach(element => {
+    dataSensor.push({ x: moment(element.time).unix(), y: element.status })
+    // dataLightSensorLabels.push(element.time);
+    // dataLightSensorData.push(element.status);
+  });
+
+  console.log('dataSensor', dataSensor);
+  dataSensor.sort((a, b) => (a.x > b.x) ? 1 : -1);
+  // if ((dataLightSensorLabels.length > 10) && (dataLightSensorLabels.length - 10 >= 10))
+  //   dataLightSensorLabels = dataLightSensorLabels.slice(dataLightSensorLabels.length - 10)
+  // if ((dataLightSensorData.length > 10) && (dataLightSensorData.length - 10 >= 10))
+  //   dataLightSensorData = dataLightSensorData.slice(dataLightSensorData.length - 10)
+
+  // const data = dataLightSensorLabels.map((date, index) => {
+  //   // console.log(date);
+  //   const x = moment(date).unix()
+  //   return {
+  //     x,
+  //     y: dataLightSensorData[index],
+  //   }
+
+  // })
+
+
   return (
     <View>
       <Text>Bezier Line Chart</Text>
-      <LineChart
-        data={{
-          labels: ["January", "February", "March", "April", "May", "June"],
-          datasets: [
-            {
-              data: [
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100
-              ]
+      <Chart
+        style={{ height: 500, width: Dimensions.get("window").width }}
+        data={
+          dataSensor
+        }
+        padding={{ left: 40, bottom: 80, right: 20, top: 20 }}
+        xDomain={{ min: dataSensor[0].x, max: dataSensor[dataSensor.length - 1].x }}
+        yDomain={{ min: 0, max: 110 }}
+      >
+        <VerticalAxis tickCount={11} theme={{ labels: { formatter: (v) => v.toFixed(2) } }} />
+        <HorizontalAxis tickCount={5} theme={{
+          labels: {
+            visible: true,
+            label: { rotation: 50, textAnchor: 'start', },
+            formatter: (x) => {
+              const m = moment.unix(x);
+              const Data = m.format("YYYY-MM-DD hh:mm:ss")
+              // console.log('date', date);
+              return Data
             }
-          ]
-        }}
-        width={Dimensions.get("window").width} // from react-native
-        height={220}
-        yAxisLabel="$"
-        yAxisSuffix="k"
-        yAxisInterval={1} // optional, defaults to 1
-        chartConfig={{
-          backgroundColor: "#e26a00",
-          backgroundGradientFrom: "#fb8c00",
-          backgroundGradientTo: "#ffa726",
-          decimalPlaces: 2, // optional, defaults to 2dp
-          color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-          labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-          style: {
-            borderRadius: 16
-          },
-          propsForDots: {
-            r: "6",
-            strokeWidth: "2",
-            stroke: "#ffa726"
           }
-        }}
-        bezier
-        style={{
-          marginVertical: 8,
-          borderRadius: 16
-        }}
-      />
+        }} />
+        <Area theme={{ gradient: { from: { color: '#ffa502' }, to: { color: '#ffa502', opacity: 0.4 } } }} />
+        <Line theme={{ stroke: { color: '#ffa502', width: 5 }, scatter: { default: { width: 4, height: 4, rx: 2 } } }} />
+      </Chart>
     </View>
   )
 };

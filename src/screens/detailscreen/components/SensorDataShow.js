@@ -80,7 +80,7 @@ const SensorDataShow = ({ navigation, id }) => {
                 <TouchableOpacity
                   key="Moisture Chart"
                   style={styles.buttonChart}
-                  onPress={() => { navigation.navigate('Chart') }}
+                  onPress={() => { navigation.navigate('Chart', { _id: id }) }}
                 >
                   <Text>
                     Go To Moisture Chart
