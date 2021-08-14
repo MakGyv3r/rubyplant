@@ -75,19 +75,7 @@ const SensorDataShow = ({ navigation, id }) => {
                 }}
               />
             </>
-            <>
-              <View style={{ padding: 15 }}>
-                <TouchableOpacity
-                  key="Moisture Chart"
-                  style={styles.buttonChart}
-                  onPress={() => { navigation.navigate('Chart', { _id: id }) }}
-                >
-                  <Text>
-                    Go To Moisture Chart
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </>
+
           </View>
         </>
       )}
@@ -100,7 +88,19 @@ const SensorDataShow = ({ navigation, id }) => {
           }%
         </Text>
       )}
-
+      <>
+        <View style={{ padding: 15 }}>
+          <TouchableOpacity
+            key="Moisture Chart"
+            style={styles.buttonChart}
+            onPress={() => { navigation.navigate('Chart', { _id: id }) }}
+          >
+            <Text>
+              Go To Data Charts
+                  </Text>
+          </TouchableOpacity>
+        </View>
+      </>
 
       {loading === false ?
         <Button
@@ -138,7 +138,6 @@ const styles = StyleSheet.create({
     marginBottom: 6,
     minWidth: "48%",
     textAlign: "center",
-
   },
   fixToText: {
     flexDirection: 'row',
