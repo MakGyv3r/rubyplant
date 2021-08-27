@@ -17,6 +17,7 @@ const SensorDataShow = ({ navigation, id }) => {
   const { state } = useContext(ProductDataContext);
   const [isEnabled, setIsEnabled] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [hubConnected, sethubConnected] = useState(true);
   const [stateData, setDataState] = useState({ 'lightSensor': null, 'muisterSensor': null });
 
   const listener = (dataServer) => {
@@ -24,11 +25,16 @@ const SensorDataShow = ({ navigation, id }) => {
     if (dataServer.lightSensor !== null) {
       setDataState({ 'lightSensor': dataServer.lightSensor, 'muisterSensor': dataServer.muisterSensor });
     }
-
     setLoading(false)
   }
 
+  const hubListener = (dataServer) => {
+    console.log(`the data from server:${dataServer.hubStatus}`);
+    sethubConnected(dataServer.hubStatus)
+  }
+
   const changeData = () => { client.on("showData", listener) }
+  const hubStatus = () => { client.on("hubConnected", hubListener) }
   const emitGetData = () => { client.emit("GetData", id) }
 
 
@@ -60,10 +66,26 @@ const SensorDataShow = ({ navigation, id }) => {
     }
   }, []);
 
+  useEffect(() => {
+    hubStatus();
+    return () => {
+      client.removeAllListeners('hubConnected', hubListener);
+    }
+  }, []);
+
+
   return (
     <>
 
       <NavigationEvents onWillFocus={() => { }} />
+      {hubConnected === false && (
+        <>
+          <View style={[styles.fixToText, styles.container]}>
+            <Text style={{ fontSize: 28 }}>-hub isn't Connected</Text>
+          </View>
+        </>
+      )}
+
       {stateData.muisterSensor !== null && (
         <>
           <Text style={{ fontSize: 28 }}>Moisture  sensor data:</Text>

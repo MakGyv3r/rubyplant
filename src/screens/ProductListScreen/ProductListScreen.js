@@ -10,7 +10,6 @@ import { initsocket, client } from '../../api/SocketConfig'
 import { Header, Colors } from 'react-native/Libraries/NewAppScreen';
 import * as BackgroundFetch from 'expo-background-fetch';
 import * as TaskManager from 'expo-task-manager';
-//import * as Notifications from 'expo-notifications';
 import Notifications from './component/Notifications'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const BACKGROUND_FETCH_TASK = 'background-fetch';
@@ -59,10 +58,8 @@ const Item = ({ item, onPress, backgroundColor, textColor }) => (
 );
 
 
-
 const ProductListScreen = ({ navigation }) => {
   const [value, setValue] = useState('value');
-  // const { getItem, setItem } = useAsyncStorage('store');
   const { state, fetchUserProducts, } = useContext(ProductDetailContext);
   const { fetchDataPlantProductsUpdates } = useContext(ProductDetailContext);
   const [selectedId, setSelectedId] = useState(null);
@@ -81,18 +78,13 @@ const ProductListScreen = ({ navigation }) => {
     });
   }
 
-
-
   TaskManager.defineTask(BACKGROUND_FETCH_TASK, async () => {
     const now = Date.now();
     console.log(`Got background fetch call at date: ${new Date(now).toISOString()}`);
     waterState();
-    // wateDrinkingState();
+    wateDrinkingState();
     return BackgroundFetch.Result.NewData;
   });
-
-
-
 
   useEffect(() => {
     initsocket();

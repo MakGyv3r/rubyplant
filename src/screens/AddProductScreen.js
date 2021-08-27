@@ -84,16 +84,6 @@ const AddPlantScreen = ({ navigation }) => {
           //Text style of the Spinner Text
           textStyle={styles.spinnerTextStyle}
         />
-        <>
-          { /*<Text style={{ fontSize: 20 }}>
-          {`loading data ${loading}`}
-        </Text>
-        </>
-       <>
-      <Text style={{ fontSize: 20 }}>
-        {`data: ${data}`}
-      </Text>*/}
-        </>
       </View>
     </SafeAreaView>
 
