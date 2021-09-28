@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
-import { Chart, Line, Area, HorizontalAxis, VerticalAxis, ChartDataPoint } from 'react-native-responsive-linechart'
+import { Chart, Line, Area, HorizontalAxis, VerticalAxis, ChartDataPoint, Tooltip } from 'react-native-responsive-linechart'
 import { Context as ProductDataContext } from '../../../context/ProductDetailContext'
-import { StyleSheet, View, Text, Dimensions } from 'react-native'
+import { StyleSheet, View, Text, Dimensions, ScrollView } from 'react-native'
 import moment from 'moment';
 
 const ChartScreen = ({ navigation }) => {
@@ -22,7 +22,7 @@ const ChartScreen = ({ navigation }) => {
   dataMoistureSensor.sort((a, b) => (a.x > b.x) ? 1 : -1);
 
   return (
-    <View>
+    <ScrollView>
       <>
         <Text>Moisture Sensor Chart</Text>
         <Chart
@@ -31,8 +31,9 @@ const ChartScreen = ({ navigation }) => {
             dataMoistureSensor
           }
           padding={{ left: 40, bottom: 110, right: 30, top: 20 }}
-          xDomain={{ min: dataMoistureSensor[0].x - 100000, max: dataMoistureSensor[dataMoistureSensor.length - 1].x }}
+          xDomain={{ min: dataMoistureSensor[0].x - 10, max: dataMoistureSensor[dataMoistureSensor.length - 1].x }}
           yDomain={{ min: 0, max: 110 }}
+
         >
           <VerticalAxis tickCount={11} theme={{ labels: { formatter: (v) => v.toFixed(2) } }} />
           <HorizontalAxis tickCount={5} theme={{
@@ -48,7 +49,9 @@ const ChartScreen = ({ navigation }) => {
             }
           }} />
           <Area theme={{ gradient: { from: { color: '#ffa502' }, to: { color: '#ffa502', opacity: 0.4 } } }} />
-          <Line theme={{ stroke: { color: '#ffa502', width: 5 }, scatter: { default: { width: 4, height: 4, rx: 2 } } }} />
+          <Line
+            tooltipComponent={<Tooltip />}
+            theme={{ stroke: { color: '#ffa502', width: 5 }, scatter: { default: { width: 4, height: 4, rx: 2 }, selected: { color: 'red' } } }} />
         </Chart>
       </>
       <>
@@ -59,7 +62,7 @@ const ChartScreen = ({ navigation }) => {
             dataLightSensor
           }
           padding={{ left: 40, bottom: 110, right: 30, top: 20 }}
-          xDomain={{ min: dataLightSensor[0].x - 100000, max: dataLightSensor[dataLightSensor.length - 1].x }}
+          xDomain={{ min: dataLightSensor[0].x - 10, max: dataLightSensor[dataLightSensor.length - 1].x }}
           yDomain={{ min: 0, max: 110 }}
         >
           <VerticalAxis tickCount={11} theme={{ labels: { formatter: (v) => v.toFixed(2) } }} />
@@ -76,10 +79,12 @@ const ChartScreen = ({ navigation }) => {
             }
           }} />
           <Area theme={{ gradient: { from: { color: '#ffa502' }, to: { color: '#ffa502', opacity: 0.4 } } }} />
-          <Line theme={{ stroke: { color: '#ffa502', width: 5 }, scatter: { default: { width: 4, height: 4, rx: 2 } } }} />
+          <Line
+            tooltipComponent={<Tooltip />}
+            theme={{ stroke: { color: '#ffa502', width: 5 }, scatter: { default: { width: 4, height: 4, rx: 2 }, selected: { color: 'red' } } }} />
         </Chart>
       </>
-    </View>
+    </ScrollView>
   )
 };
 
