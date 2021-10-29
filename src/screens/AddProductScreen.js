@@ -51,7 +51,7 @@ const AddPlantScreen = ({ navigation }) => {
       console.log('timeout started')
       timer.current = setTimeout(() => {
         setLoading(false)
-        setData('somting want wrong please try agin');
+        setData('something went wrong please try again');
         console.log('i am after timeout');
       }, 20000);
     } return () => clearTimeout(timer.current);
