@@ -6,13 +6,12 @@ import { NavigationEvents } from 'react-navigation';
 
 const IrrigateMode = ({ id }) => {
   const { state, state: { Data }, fetchDataPlantProduct } = useContext(ProductContext);
+  const product = state.data.find((data) => data._id === id);
   const [motorWorks, setMotorState] = useState(false);
   const [waterState, setWaterState] = useState(true);
-  const [autoIrrigateState, setAutoIrrigate] = useState(false);
+  const [autoIrrigateState, setAutoIrrigate] = useState(product.autoIrrigateState);
   const [waterTime, setWaterTime] = useState('');
   const [loading, setLoading] = useState(false);
-
-  const product = state.data.find((data) => data._id === id);
 
 
   //socket events
