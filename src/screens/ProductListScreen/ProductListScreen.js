@@ -68,13 +68,18 @@ const ProductListScreen = ({ navigation }) => {
     fetchDataPlantProductsUpdates();
     setObjectValue(state);
     state.data.forEach(element => {
+
       if (element.autoIrrigateState !== true)
-        if (element.waterMotor.state.timeOff)
-          if (Math.floor((new Date(now) - new Date(element.waterMotor.timeOff)) / 60000 / 60 / 24) > 2)
-            if (element.data.muisterSensor.tests[element.data.muisterSensor.tests.length - 1].status < 17) {
+        if (element.waterMotor.state.timeOff) {
+          if (Math.floor((new Date(now) - new Date(element.waterMotor.timeOff)) / 60000 / 60 / 24) > 2) {
+            console.log(element.muisterSensor.tests[element.data.muisterSensor.tests.length - 1].status);
+            if (element.muisterSensor.tests[element.data.muisterSensor.tests.length - 1].status < 73) {
               content = { title: `${element.name}: Warning!`, body: `I don't have enough water. I'm thirsty. I'm sad` };
+
               Notifications(content);
             }
+          }
+        }
     });
   }
 
@@ -102,7 +107,6 @@ const ProductListScreen = ({ navigation }) => {
         textColor={'black'}
         onPress={() => { setSelectedId(item._id), navigation.navigate('ProductDetail', { _id: item._id }) }}
       />
-
     );
   };
 
