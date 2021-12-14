@@ -9,7 +9,7 @@ const BACKGROUND_FETCH_TASK = 'background-fetch';
 
 const registerBackgroundFetchAsync = async () => {
   return await BackgroundFetch.registerTaskAsync(BACKGROUND_FETCH_TASK, {
-    minimumInterval: 1.5, // 60*15 15 minutes
+    minimumInterval: 60 * 5, // 60*15 15 minutes
     stopOnTerminate: false, // android only,
     startOnBoot: true, // android only
   });

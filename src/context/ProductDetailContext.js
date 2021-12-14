@@ -45,7 +45,7 @@ const fetchDataPlantProduct = (dispatch) => async (id) => {
 };
 
 const fetchDataPlantProductsUpdates = (dispatch) => async (id) => {
-  const response = await ApiConnect.put(`${URL}/getUserPlantProductsUpdates`,
+  const response = await ApiConnect.get(`${URL}/getUserPlantProductsUpdates`,
     { id },
   );
   dispatch({ type: 'fetch_data_new', payload: response.data });
