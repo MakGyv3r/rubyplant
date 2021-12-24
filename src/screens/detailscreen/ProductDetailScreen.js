@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { StyleSheet, } from 'react-native';
+import { StyleSheet, Button, TouchableOpacity, View, Text } from 'react-native';
 import IrrigateMode from './components/IrrigateMode'
 import SensorDataShow from './components/SensorDataShow'
 import {
@@ -15,7 +15,6 @@ const ProductDetailScreen = ({ navigation }) => {
     <>
       <>
         <SensorDataShow navigation={nav} id={_id} />
-
       </>
       <>
         <IrrigateMode
@@ -23,6 +22,17 @@ const ProductDetailScreen = ({ navigation }) => {
         />
       </>
       <>
+        <View style={{ padding: 5 }}>
+          <TouchableOpacity
+            key="water control screan"
+            style={styles.buttonChart}
+            onPress={() => { navigation.navigate('ControlWater', { _id: id }) }}
+          >
+            <Text>
+              Go To Data Control Auto watering
+            </Text>
+          </TouchableOpacity>
+        </View>
       </>
     </>
 
@@ -52,6 +62,17 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '400',
     color: Colors.dark,
+  },
+  buttonChart: {
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+    borderRadius: 4,
+    backgroundColor: "coral",
+    alignSelf: "flex-start",
+    marginHorizontal: "1%",
+    marginBottom: 6,
+    minWidth: "48%",
+    textAlign: "center",
   },
 });
 

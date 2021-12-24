@@ -30,6 +30,7 @@
     "react-native-paper": "^4.9.2",
     "react-native-progress-circle": "^2.1.0",
     "react-native-push-notification": "^7.4.0",
+    "react-native-range-slider-expo": "^1.4.1",
     "react-native-responsive-linechart": "^5.7.1",
     "react-native-safe-area-context": "3.2.0",
     "react-native-screens": "~3.4.0",
