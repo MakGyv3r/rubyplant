@@ -81,14 +81,14 @@ const SensorDataShow = ({ navigation, id }) => {
       {hubConnected === false && (
         <>
           <View style={[styles.fixToText, styles.container]}>
-            <Text style={{ fontSize: 28 }}>-hub isn't Connected</Text>
+            <Text style={{ fontSize: 24 }}>-hub isn't Connected</Text>
           </View>
         </>
       )}
 
       {stateData.muisterSensor !== null && (
         <>
-          <Text style={{ fontSize: 28 }}>Moisture  sensor data:</Text>
+          <Text style={{ fontSize: 24 }}>Moisture  sensor data:</Text>
           <View style={[styles.fixToText, styles.container]}>
             <>
               <DynamicProgressCircle
@@ -103,7 +103,7 @@ const SensorDataShow = ({ navigation, id }) => {
       )}
 
       {stateData.lightSensor !== null && (
-        <Text style={{ fontSize: 28 }}>
+        <Text style={{ fontSize: 24 }}>
           Light sensor data:
           {
             stateData.lightSensor
@@ -111,7 +111,7 @@ const SensorDataShow = ({ navigation, id }) => {
         </Text>
       )}
       <>
-        <View style={{ padding: 15 }}>
+        <View style={{ padding: 5 }}>
           <TouchableOpacity
             key="Moisture Chart"
             style={styles.buttonChart}
@@ -151,8 +151,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   buttonChart: {
-    paddingHorizontal: 20,
-    paddingVertical: 20,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
     borderRadius: 4,
     backgroundColor: "coral",
     alignSelf: "flex-start",

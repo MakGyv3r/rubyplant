@@ -13,11 +13,12 @@ const IrrigateMode = ({ id }) => {
   const [autoIrrigateState, setAutoIrrigate] = useState(product.autoIrrigateState);
   const [waterTime, setWaterTime] = useState('');
   const [loading, setLoading] = useState(false);
-  const [motorWorkingTime, setmotorWorkingTime] = useState(0);
+  const [motorWaterAmount, setMotorWaterAmount] = useState(0);
 
   //socket events
   const changeData = () => { client.on("changeMotorState", listener) }
   const emitMotorState = () => { client.emit("AppMotorState", id, !motorWorks) }
+  const emitMotorTimeState = () => { client.emit("MotorTimeState", id, motorWaterAmount * 450 / 60000) }
   const emitAutoIrrigate = () => { client.emit("AppAutoIrrigate", id, !autoIrrigateState) }
 
   const hubStatus = () => { client.on("hubConnected", hubListener) }
@@ -72,6 +73,11 @@ const IrrigateMode = ({ id }) => {
     setLoading(true)
   };
 
+  const onPressMotorAmount = () => {
+    emitMotorTimeState();
+    setLoading(true)
+  };
+
   const toggleSwitch = () => {
     emitAutoIrrigate();
     setLoading(true)
@@ -82,7 +88,7 @@ const IrrigateMode = ({ id }) => {
       <>
         <NavigationEvents onWillFocus={() => fetchDataPlantProduct(id)} />
         <>
-          <Text style={{ fontSize: 24 }}>
+          <Text style={{ fontSize: 20 }}>
             Is there water:
               {waterState
               ? 'Yes'
@@ -90,16 +96,35 @@ const IrrigateMode = ({ id }) => {
           </Text>
         </>
         <>
-          <Text style={{ fontSize: 24 }}>The amount of water to irrigat:</Text>
-          <Slider min={0} max={500} step={5}
-            valueOnChange={value => setmotorWorkingTime(value)}
-            initialValue={0}
-            knobColor='red'
-            valueLabelsBackgroundColor='black'
-            inRangeBarColor='green'
-            outOfRangeBarColor='orange'
-          />
-          <Text style={{ fontSize: 20 }}>value:  {motorWorkingTime}ml</Text>
+          <>
+            <Text style={{ fontSize: 20 }}>Amount of water to irrigate:</Text>
+            <Slider min={0} max={500} step={5}
+              valueOnChange={value => setMotorWaterAmount(value)}
+              initialValue={0}
+              knobColor='red'
+              valueLabelsBackgroundColor='black'
+              inRangeBarColor='green'
+              outOfRangeBarColor='orange'
+            />
+            <Text style={{ fontSize: 18 }}>value:  {motorWaterAmount}ml</Text>
+          </>
+          <>
+            {(loading === false) ? ((motorWorks === true) ? (
+              <>
+                <TouchableOpacity style={styles.buttonOFF} onPress={onPress}>
+                  <Text>{'OFF'}</Text>
+                </TouchableOpacity>
+              </>
+            ) : (<>
+              <TouchableOpacity style={styles.buttonON} onPress={onPressMotorAmount}>
+                <Text>{'Start motor irrigate water amount'}</Text>
+              </TouchableOpacity></>
+              )) : (
+                <>
+                  <ActivityIndicator animating={true} size="large" color="red" />
+                </>
+              )}
+          </>
         </>
         <>
           {(loading === false) ? ((motorWorks === true) ? (
@@ -137,6 +162,7 @@ const IrrigateMode = ({ id }) => {
             ) : (
               <ActivityIndicator animating={true} size="large" color="red" />
             )}
+
         </>
       </>
     );
