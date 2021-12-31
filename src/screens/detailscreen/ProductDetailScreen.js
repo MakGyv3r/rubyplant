@@ -1,41 +1,47 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { StyleSheet, Button, TouchableOpacity, View, Text } from 'react-native';
+import { StyleSheet, Button, TouchableOpacity, View, Text, ScrollView } from 'react-native';
 import IrrigateMode from './components/IrrigateMode'
 import SensorDataShow from './components/SensorDataShow'
 import {
   Header,
   Colors
 } from 'react-native/Libraries/NewAppScreen';
+import { Card } from 'react-native-elements';
 
 const ProductDetailScreen = ({ navigation }) => {
   const _id = navigation.getParam('_id');
   const nav = navigation;
-
   return (
-    <>
+    <ScrollView style={styles.scrollView}>
       <>
-        <SensorDataShow navigation={nav} id={_id} />
-      </>
-      <>
-        <IrrigateMode
-          id={_id}
-        />
-      </>
-      <>
-        <View style={{ padding: 5 }}>
-          <TouchableOpacity
-            key="water control screan"
-            style={styles.buttonChart}
-            onPress={() => { navigation.navigate('ControlWater', { _id: id }) }}
-          >
-            <Text>
-              Go To Data Control Auto watering
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </>
-    </>
+        <>
+          <Card title="Plant Data info">
+            <SensorDataShow navigation={nav} id={_id} />
+          </Card>
+        </>
+        <>
+          <Card title="User control Irrigate">
+            <IrrigateMode
+              id={_id}
+            />
+          </Card>
+        </>
 
+        <>
+          <View style={{ padding: 5 }}>
+            <TouchableOpacity
+              key="water control screen"
+              style={styles.buttonChart}
+              onPress={() => { navigation.navigate('ControlIrgation', { id: _id }) }}
+            >
+              <Text>
+                Go To Data Control Auto watering
+            </Text>
+            </TouchableOpacity>
+          </View>
+        </>
+      </>
+    </ScrollView >
   );
 };
 

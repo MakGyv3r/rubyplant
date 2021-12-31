@@ -8,7 +8,7 @@ import SigninScreen from './src/screens/SigninScreen';
 import SignupScreen from './src/screens/SignupScreen';
 import ProductDetailScreen from './src/screens/detailscreen/ProductDetailScreen';
 import ChartScreen from './src/screens/detailscreen/components/ChartScreen';
-import ControlWaterScreen from './src/screens/controlWater/controlWaterScreen';
+import ControlIrgationScreen from './src/screens/controlWater/controlIrgationScreen';
 import ProductListScreen from './src/screens/ProductListScreen/ProductListScreen';
 import AddProductScreen from './src/screens/AddProductScreen';
 import ResolveAuthScreen from './src/screens/ResolveAuthScreen';
@@ -20,7 +20,7 @@ const PlnatListFlow = createStackNavigator({
   ProductList: ProductListScreen,
   ProductDetail: ProductDetailScreen,
   Chart: ChartScreen,
-  ControlWater: ControlWaterScreen,
+  ControlIrgation: ControlIrgationScreen,
 });
 PlnatListFlow.navigationOptions = {
   title: 'ProductList',

@@ -10,6 +10,8 @@ const ProductDetailReducer = (state, action) => {
       return action.payload;
     case 'fetch_data_new':
       return { ...state, Data: action.payload };
+    case 'Auto_Irrigate_SetUp':
+      return { ...state, Data: action.payload };
     case 'Motor_State':
       return action.payload;
     case 'UpdataResults':
@@ -44,6 +46,24 @@ const fetchDataPlantProduct = (dispatch) => async (id) => {
   dispatch({ type: 'fetch_data_new', payload: response.data });
 };
 
+const autoIrrigateStateSetUp = (dispatch) => async ({ id, humLowLevel, humHighLevel, waterPumpOnTimeLow, waterPumpOnTimeMid, waterPumpOnTimeHigh }) => {
+  humLowLevel = Math.round(4095 - humLowLevel * 4095 / 100);
+  humHighLevel = Math.round(4095 - humHighLevel * 4095 / 100);
+  waterPumpOnTimeLow = Math.round(waterPumpOnTimeLow * 60000 / 450);
+  waterPumpOnTimeMid = Math.round(waterPumpOnTimeMid * 60000 / 450);
+  waterPumpOnTimeHigh = Math.round(waterPumpOnTimeHigh * 60000 / 450);
+  console.log(id)
+  const response = await ApiConnect.post(`${URL}/autoIrrigateStateSetUp`, {
+    id,
+    humLowLevel,
+    humHighLevel,
+    waterPumpOnTimeLow,
+    waterPumpOnTimeMid,
+    waterPumpOnTimeHigh
+  });
+  dispatch({ type: 'Auto_Irrigate_SetUp', payload: response.data });
+};
+
 const fetchDataPlantProductsUpdates = (dispatch) => async (id) => {
   const response = await ApiConnect.get(`${URL}/getUserPlantProductsUpdates`,
     { id },
@@ -63,7 +83,6 @@ const addMotorStateApp = (dispatch) => async (id, stateMotor) => {
 };
 
 const changeAutoWatering = (dispatch) => async (stateAutoWatering) => {
-  console.log(stateAutoWatering);
   const response = await ApiConnect.put(`${URL}/changeAutoWatering`, {
     stateAutoWatering,
   });
@@ -81,6 +100,7 @@ export const { Provider, Context } = createDataContext(
     fetchDataPlantProductsUpdates,
     fetchUserProducts,
     fetchOnePlantProduct,
+    autoIrrigateStateSetUp,
     UpdataResults,
     addMotorStateApp,
     changeAutoWatering,

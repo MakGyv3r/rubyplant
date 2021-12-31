@@ -3,6 +3,7 @@ import { Text, StyleSheet, TouchableOpacity, Switch, SafeAreaView, StatusBar, Ac
 import { Context as ProductContext } from '../../../context/ProductDetailContext'
 import { client } from '../../../api/SocketConfig'
 import { NavigationEvents } from 'react-navigation';
+import RangeSlider, { Slider } from 'react-native-range-slider-expo';
 
 const IrrigateMode = ({ id }) => {
   const { state, state: { Data }, fetchDataPlantProduct } = useContext(ProductContext);
@@ -12,12 +13,14 @@ const IrrigateMode = ({ id }) => {
   const [autoIrrigateState, setAutoIrrigate] = useState(product.autoIrrigateState);
   const [waterTime, setWaterTime] = useState('');
   const [loading, setLoading] = useState(false);
-
+  const [motorWorkingTime, setmotorWorkingTime] = useState(0);
 
   //socket events
   const changeData = () => { client.on("changeMotorState", listener) }
   const emitMotorState = () => { client.emit("AppMotorState", id, !motorWorks) }
   const emitAutoIrrigate = () => { client.emit("AppAutoIrrigate", id, !autoIrrigateState) }
+
+  const hubStatus = () => { client.on("hubConnected", hubListener) }
 
   const listener = (dataServer) => {
     console.log(`the data from server:${dataServer}`);
@@ -29,6 +32,7 @@ const IrrigateMode = ({ id }) => {
     setLoading(false)
   }
 
+  const hubListener = () => { setLoading(false) }
 
   let timer = useRef(null);
   useEffect(() => {
@@ -53,10 +57,13 @@ const IrrigateMode = ({ id }) => {
     }
   }, []);
 
+
   useEffect(() => {
     changeData();
+    hubStatus();
     return () => {
       client.removeAllListeners('changeMotorState', listener);
+      client.removeAllListeners('hubConnected', hubListener);
     }
   }, []);
 
@@ -75,12 +82,24 @@ const IrrigateMode = ({ id }) => {
       <>
         <NavigationEvents onWillFocus={() => fetchDataPlantProduct(id)} />
         <>
-          <Text style={{ fontSize: 28 }}>
+          <Text style={{ fontSize: 24 }}>
             Is there water:
               {waterState
               ? 'Yes'
               : 'NO'}
           </Text>
+        </>
+        <>
+          <Text style={{ fontSize: 24 }}>The amount of water to irrigat:</Text>
+          <Slider min={0} max={500} step={5}
+            valueOnChange={value => setmotorWorkingTime(value)}
+            initialValue={0}
+            knobColor='red'
+            valueLabelsBackgroundColor='black'
+            inRangeBarColor='green'
+            outOfRangeBarColor='orange'
+          />
+          <Text style={{ fontSize: 20 }}>value:  {motorWorkingTime}ml</Text>
         </>
         <>
           {(loading === false) ? ((motorWorks === true) ? (
@@ -100,12 +119,11 @@ const IrrigateMode = ({ id }) => {
             )}
         </>
         <>
-          <Text style={{ fontSize: 28 }}>
+          <Text style={{ fontSize: 20 }}>
             last time plant watered:
               {waterTime}
           </Text>
-
-          <Text style={{ fontSize: 28 }}>{'auto Watering progrem:'}</Text>
+          <Text style={{ fontSize: 24 }}>{'auto Watering progrem:'}</Text>
           {(loading === false) ?
             (
               <Switch
@@ -136,6 +154,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginTop: 10,
   },
+
   buttonON: {
     alignItems: 'center',
     backgroundColor: '#00CC00',
