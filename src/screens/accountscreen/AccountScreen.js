@@ -5,10 +5,11 @@ import { SafeAreaView } from 'react-navigation';
 import Spacer from '../../components/Spacer';
 import { Context as AuthContext } from '../../context/AuthContext';
 import { FontAwesome } from '@expo/vector-icons';
+import { NavigationEvents } from 'react-navigation';
 import NotificationBackgroundTask from './components/NotificationBackgroundTask'
 
 
-const AccountScreen = () => {
+const AccountScreen = ({ navigation }) => {
   const { signout } = useContext(AuthContext);
   return (
     <>
@@ -22,6 +23,9 @@ const AccountScreen = () => {
       </>
       <>
         <NotificationBackgroundTask />
+      </>
+      <>
+        <Button title="WiFi network" onPress={() => { navigation.navigate('WiFiNetwork') }} />
       </>
     </>
   );

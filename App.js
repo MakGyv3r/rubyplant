@@ -10,6 +10,7 @@ import ProductDetailScreen from './src/screens/detailscreen/ProductDetailScreen'
 import ChartScreen from './src/screens/detailscreen/components/ChartScreen';
 import ControlIrgationScreen from './src/screens/controlWater/controlIrgationScreen';
 import ProductListScreen from './src/screens/ProductListScreen/ProductListScreen';
+import WiFiNetworkScreen from './src/screens/wifiNetworkScreen/WiFiNetworkScreen';
 import AddProductScreen from './src/screens/AddProductScreen';
 import ResolveAuthScreen from './src/screens/ResolveAuthScreen';
 import { Provider as AuthProvider } from './src/context/AuthContext';
@@ -26,6 +27,14 @@ PlnatListFlow.navigationOptions = {
   title: 'ProductList',
   tabBatIcone: <FontAwesome name="th-list" size={20} />,
 };
+const AccountScreenFlow = createStackNavigator({
+  Account: AccountScreen,
+  WiFiNetwork: WiFiNetworkScreen,
+});
+AccountScreenFlow.navigationOptions = {
+  title: 'AccountScreen',
+  tabBatIcone: <FontAwesome name="th-list" size={20} />,
+};
 const switchNavigator = createSwitchNavigator({
   ResolveAuth: ResolveAuthScreen,
   loginFlow: createStackNavigator({
@@ -35,7 +44,7 @@ const switchNavigator = createSwitchNavigator({
   mainFlow: createBottomTabNavigator({
     PlnatListFlow: PlnatListFlow,
     AddProduct: AddProductScreen,
-    Account: AccountScreen,
+    AccountScreenFlow: AccountScreenFlow,
   }),
 });
 
