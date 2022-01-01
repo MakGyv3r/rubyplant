@@ -15,7 +15,6 @@ const AccountScreen = ({ navigation }) => {
     <>
       <>
         <SafeAreaView forceInset={{ top: 'always' }}>
-          <Text style={{ fontSize: 48 }}>AccountScreen</Text>
           <Spacer>
             <Button title="Sign out" onPress={signout} />
           </Spacer>
@@ -25,14 +24,16 @@ const AccountScreen = ({ navigation }) => {
         <NotificationBackgroundTask />
       </>
       <>
-        <Button title="WiFi network" onPress={() => { navigation.navigate('WiFiNetwork') }} />
+        <Spacer>
+          <Button title="WiFi network" onPress={() => { navigation.navigate('WiFiNetwork') }} />
+        </Spacer>
       </>
     </>
   );
 };
 
 AccountScreen.navigationOptions = {
-  title: 'Account',
+  title: 'Account Screen',
   tabBarIcon: <FontAwesome name="gear" size={20} />,
 };
 const styles = StyleSheet.create({});
