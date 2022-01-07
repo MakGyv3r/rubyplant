@@ -42,7 +42,9 @@
     "react-navigation-tabs": "^2.11.1",
     "socket.io-client": "^4.1.2",
     "@react-native-community/netinfo": "6.0.0",
-    "expo-network": "~3.2.0"
+    "expo-network": "~3.2.0",
+    "expo-location": "~12.1.2",
+    "react-native-webview": "11.6.2"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0"
