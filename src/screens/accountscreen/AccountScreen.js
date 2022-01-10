@@ -28,6 +28,11 @@ const AccountScreen = ({ navigation }) => {
           <Button title="WiFi network" onPress={() => { navigation.navigate('WiFiNetwork') }} />
         </Spacer>
       </>
+      <>
+        <Spacer>
+          <Button title="Location Services " onPress={() => { navigation.navigate('LocationServices') }} />
+        </Spacer>
+      </>
     </>
   );
 };

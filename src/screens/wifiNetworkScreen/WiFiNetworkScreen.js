@@ -2,12 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Platform, SafeAreaView, StyleSheet, View, Text, Button } from 'react-native';
 import { Card } from 'react-native-elements';
 import NetInfo from '@react-native-community/netinfo';
-import { WebView } from 'react-native-webview';
-import * as Network from 'expo-network';
 
 const WiFiNetworkScreen = ({ navigation }) => {
   const [netInfo, setNetInfo] = useState('');
-  c
+  const [ssid, setSsid] = useState('');
+
 
   useEffect(() => {
     // Subscribe to network state updates
@@ -18,33 +17,40 @@ const WiFiNetworkScreen = ({ navigation }) => {
         Is connected?: ${state.isConnected}
         IP Address: ${state.details.ipAddress}`
       );
-      setNetInfo((state.details.ipAddress === '192.168.4.2') ? 'Connected' : 'Not Connected')
-    }, []);
+      setSsid(state.details.ssid)
+    });
 
     return () => {
       // Unsubscribe to network state updates
-      //   unsubscribe();
+      unsubscribe();
     };
   }, []);
+
+  const getNetInfo = () => {
+    // To get the network state once
+    NetInfo.fetch().then((state) => {
+      alert(
+        `Connection type: ${state.type}
+        SSID is: ${state.details.ssid}
+        Is connected?: ${state.isConnected}
+        IP Address: ${state.details.ipAddress}`
+      );
+      console.log(state)
+    });
+  };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
         <Text style={styles.header}>
-          For connecting "RubyPlant Hub" to your local wifi internet network
+          For connecting "RUBYPLANT Hub" to the internet
           {'\n'}
-          Please go to your WIFI netwroks and connect to the  "RubyPlant Hub WiFi"
+          Please go to your WIFI netwroks and connect to RUBYPLANT WIFI
         </Text>
         <Text style={styles.textStyle}>
-          RubyPlant Hub connected to wifi: {netInfo}
+          RUBYPLANT HUB connected to wifi: {ssid}
         </Text>
-      </View>
-
-      <View style={styles.container}>
-        <WebView
-          style={styles.container}
-          source={{ uri: 'http://192.168.4.1' }}
-        />
+        <Button title="Get more detailed NetInfo" onPress={getNetInfo} />
       </View>
     </SafeAreaView>
   );
