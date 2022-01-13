@@ -15,6 +15,8 @@ import * as IntentLauncher from "expo-intent-launcher";
 import * as Location from 'expo-location';
 import Constants from 'expo-constants';
 import * as Device from 'expo-device';
+import { NavigationEvents } from 'react-navigation';
+
 const LocationServicesScreen = ({ navigation }) => {
   const [openSetting, setOpenSetting] = useState(null);
   const [isLocationModalVisible, setIsLocationModalVisible] = useState(null);
@@ -23,9 +25,7 @@ const LocationServicesScreen = ({ navigation }) => {
 
   const appState = useRef(AppState.currentState);
 
-  useEffect(() => {
-    AppState.removeEventListener('change', _handleAppStateChange);
-  }, []);
+
 
   const _handleAppStateChange = nextAppState => {
     if (
@@ -33,7 +33,6 @@ const LocationServicesScreen = ({ navigation }) => {
       nextAppState === 'active'
     ) {
       console.log('App has come to the foreground!');
-      _getLocationAsync();
     }
     appState.current = nextAppState;
   };
@@ -44,9 +43,14 @@ const LocationServicesScreen = ({ navigation }) => {
       setErrorMessage(
         'Oops, this will not work on Sketch in an Android emulator. Try it on your device!'
       );
+      console.log("test ")
     } else {
       _getLocationAsync();
     }
+  }, []);
+
+  useEffect(() => {
+    AppState.removeEventListener('change', _handleAppStateChange);
   }, []);
 
   const _getLocationAsync = async () => {
@@ -56,10 +60,10 @@ const LocationServicesScreen = ({ navigation }) => {
         setErrorMessage(
           'Permission to access location was denied'
         );
+        openSettings()
         return;
       }
       let location = await Location.getCurrentPositionAsync({});
-
       setLocation(location);
     } catch (error) {
       let status = await Location.getProviderStatusAsync();
@@ -90,30 +94,27 @@ const LocationServicesScreen = ({ navigation }) => {
   }
 
   return (
-    <View style={styles.container}>
-      <Modal
-        animationType="slide"
-        onRequestClose={openSetting ? openSettings() : undefined}
-        visible={isLocationModalVisible}
-      >
-        <View
-          style={{
-            height: 300,
-            width: 300,
-            backgroundColor: 'white',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
+    <>
+      <NavigationEvents onWillFocus={() => { _getLocationAsync() }} />
+      <View style={styles.container}>
+        <Modal
+          animationType="slide"
+          onRequestClose={openSetting ? openSettings() : undefined}
+          visible={isLocationModalVisible}
         >
-          <Button
-            onPress={() => (setIsLocationModalVisible(false), setOpenSetting(true))
-            }
-            title="Enable Location Services"
-          />
-        </View>
-      </Modal>
-      <Text style={styles.paragraph}>{text}</Text>
-    </View>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Button
+                onPress={() => (setIsLocationModalVisible(false), setOpenSetting(true))
+                }
+                title="Enable Location Services"
+              />
+            </View>
+          </View>
+        </Modal>
+        <Text style={styles.paragraph}>{text}</Text>
+      </View>
+    </>
   );
 
 }
@@ -121,10 +122,24 @@ const LocationServicesScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    // paddingTop: Constants.statusBarHeight,
-    backgroundColor: '#ecf0f1'
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
   },
   paragraph: {
     margin: 24,

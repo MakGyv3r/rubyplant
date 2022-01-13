@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Platform, SafeAreaView, StyleSheet, View, Text, Button } from 'react-native';
 import { Card } from 'react-native-elements';
 import NetInfo from '@react-native-community/netinfo';
+import Location from '../LocationServicesScreen/LocationServicesScreen'
 
 const WiFiNetworkScreen = ({ navigation }) => {
   const [netInfo, setNetInfo] = useState('');
@@ -41,6 +42,15 @@ const WiFiNetworkScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      <View style={styles.container}>
+        <Text style={styles.header}>
+          picture explaning how to connect the hub,
+          and whan the light shows Red it is connected to the wifi
+        </Text>
+      </View>
+      <View style={styles.container}>
+        <Location />
+      </View>
       <View style={styles.container}>
         <Text style={styles.header}>
           For connecting "RUBYPLANT Hub" to the internet
