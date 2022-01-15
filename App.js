@@ -10,7 +10,7 @@ import ProductDetailScreen from './src/screens/detailscreen/ProductDetailScreen'
 import ChartScreen from './src/screens/detailscreen/components/ChartScreen';
 import ControlIrgationScreen from './src/screens/controlWater/controlIrgationScreen';
 import ProductListScreen from './src/screens/ProductListScreen/ProductListScreen';
-import WiFiNetworkScreen from './src/screens/wifiNetworkScreen/WiFiNetworkScreen';
+import HubConnectScreen from './src/screens/HubConnectScreen/HubConnectScreen';
 import LocationServicesScreen from './src/screens/LocationServicesScreen/LocationServicesScreen';
 import AddProductScreen from './src/screens/AddProductScreen';
 import ResolveAuthScreen from './src/screens/ResolveAuthScreen';
@@ -30,7 +30,7 @@ PlnatListFlow.navigationOptions = {
 };
 const AccountScreenFlow = createStackNavigator({
   Account: AccountScreen,
-  WiFiNetwork: WiFiNetworkScreen,
+  HubConnectScreen: HubConnectScreen,
   LocationServices: LocationServicesScreen,
 });
 AccountScreenFlow.navigationOptions = {
