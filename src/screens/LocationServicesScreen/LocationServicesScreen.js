@@ -28,6 +28,8 @@ const LocationServicesScreen = ({ navigation }) => {
   const [buttonLocationDisabled, setbuttonLocationDisabled] = useState(null);
   const appState = useRef(AppState.currentState);
 
+  const [status, requestPermission] = Location.useForegroundPermissions();
+
   const _handleAppStateChange = nextAppState => {
     console.log(appState)
     if (
@@ -35,7 +37,7 @@ const LocationServicesScreen = ({ navigation }) => {
       nextAppState === 'active'
     ) {
       console.log('App has come to the foreground!');
-      LocationCheck()
+      //      LocationCheck()
     }
     appState.current = nextAppState;
   };
@@ -47,9 +49,8 @@ const LocationServicesScreen = ({ navigation }) => {
     //     'Oops, this will not work on Sketch in an Android emulator. Try it on your device!'
     //   );
     // } else {
-    //   _getLocationAsync();
-    // }
     _getLocationAsync();
+    // }
     return (() => {
       AppState.removeEventListener('change', _handleAppStateChange);
     })
@@ -57,8 +58,9 @@ const LocationServicesScreen = ({ navigation }) => {
 
   const _getLocationAsync = async () => {
     try {
-      let { status } = await Location.getForegroundPermissionsAsync();
-      if (status !== 'granted') {
+      let { statusLocation } = await Location.getForegroundPermissionsAsync();
+      console.log(' i am here ' + statusLocation)
+      if (statusLocation === 'denied') {
         setErrorMessage(
           'Permission to access location was denied'
         );
@@ -72,16 +74,22 @@ const LocationServicesScreen = ({ navigation }) => {
       setLocation(location);
 
     } catch (error) {
+      // let location = await Location.hasServicesEnabledAsync({});
+      // if (location === false) {
+      //   setbuttonLocationDisabled(false)
+      //   setIsLocationModalVisible(true);
+      // }
       LocationCheck()
     }
   };
 
   const LocationEnable = async () => {
     try {
-      let { status } = await Location.getForegroundPermissionsAsync();
-      if (status === 'granted') {
+      requestPermission()
+      console.log(' i am here1')
+      if (status.granted === true) {
         let location = await Location.hasServicesEnabledAsync({});
-        if (location === false) {
+        if (location === true) {
           let location = await Location.getCurrentPositionAsync({});
           setLocation(location);
           setIsLocationModalVisible(false);
@@ -89,26 +97,27 @@ const LocationServicesScreen = ({ navigation }) => {
         return;
       }
     } catch (error) {
-      LocationCheck();
+      if (status.granted === false) {
+        setbuttonLocationDisabled(true)
+        setIsLocationModalVisible(true);
+      }
     }
   };
 
   const LocationCheck = async () => {
-    let status = await Location.getProviderStatusAsync();
-    if (!status.locationServicesEnabled) {
-      setbuttonLocationDisabled(false)
+    console.log(' i am here2')
+    await requestPermission()
+    console.log(status)
+    if (status.granted === false) {
+      setbuttonLocationDisabled(true)
       setIsLocationModalVisible(true);
     }
   };
-
 
   const openSettings = () => {
     if (Platform.OS == 'ios') {
       Linking.openURL('app-settings:');
     } else {
-      // IntentLauncher.startActivityAsync(
-      //   IntentLauncher.ACTION_LOCATION_SOURCE_SETTINGS
-      // );
       requestLocationPermission();
     }
     setOpenSetting(false);
@@ -116,17 +125,24 @@ const LocationServicesScreen = ({ navigation }) => {
 
   const requestLocationPermission = async () => {
     try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log("You can use the Location");
-      } else {
-        console.log("Camera permission denied");
-        //setbuttonLocationDisabled(false)
+      requestPermission()
+      console.log(' i am here3')
+      if (status.canAskAgain === true) {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          console.log("You can use the Location");
+        } else {
+          console.log("location  permission denied");
+          setbuttonLocationDisabled(true)
+        }
+      }
+      else {
+        startActivityAsync(ActivityAction.LOCATION_SOURCE_SETTINGS);
       }
     } catch (err) {
-      console.warn(err);
+      console.log('err', err);
     }
   };
 
@@ -144,7 +160,6 @@ const LocationServicesScreen = ({ navigation }) => {
   return (
     <>
       <NavigationEvents onWillFocus={() => { _getLocationAsync() }} />
-
       <View style={styles.container}>
         <Modal
           animationType="slide"
@@ -159,7 +174,7 @@ const LocationServicesScreen = ({ navigation }) => {
 
           <View style={styles.modalView}>
             <Button
-              onPress={() => (LocationEnable())
+              onPress={() => (_getLocationAsync())
               }
               disabled={buttonLocationDisabled}
               title="Enable Location "
