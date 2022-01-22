@@ -25,7 +25,7 @@ const AccountScreen = ({ navigation }) => {
       </>
       <>
         <Spacer>
-          <Button title="WiFi network" onPress={() => { navigation.navigate('WiFiNetwork') }} />
+          <Button title="Hub network" onPress={() => { navigation.navigate('HubConnectScreen') }} />
         </Spacer>
       </>
       <>

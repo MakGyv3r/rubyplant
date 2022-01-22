@@ -107,78 +107,12 @@ const LocationServicesScreen = ({ navigation }) => {
 
   useEffect(() => {
     AppState.addEventListener('change', _handleAppStateChange);
-    // if (Platform.OS === 'android' && !Device.isDevice) {
-    //   setErrorMessage(
-    //     'Oops, this will not work on Sketch in an Android emulator. Try it on your device!'
-    //   );
-    // } else {
-    // _getLocationAsync();
-    // }
     return (() => {
       AppState.removeEventListener('change', _handleAppStateChange);
     })
   }, [openSetting]);
 
-  const _getLocationAsync = async () => {
-    try {
-      //c = await Location.getForegroundPermissionsAsync();
-      // console.log(' i am here ' + statusLocation)
-      // if (statusLocation === 'denied') {
-      //   setErrorMessage(
-      //     'Permission to access location was denied'
-      //   );
-      //   setbuttonLocationDisabled(true)
-      //   setIsLocationModalVisible(true);
-      //   return;
-      // }
-      // setbuttonLocationDisabled(false)
-      // setIsLocationModalVisible(false);
-      // let location = await Location.getCurrentPositionAsync({});
-      // setLocation(location);
 
-    } catch (error) {
-      // let location = await Location.hasServicesEnabledAsync({});
-      // if (location === false) {
-      //   setbuttonLocationDisabled(false)
-      //   setIsLocationModalVisible(true);
-      // }
-      LocationCheck()
-    }
-  };
-
-  // const LocationEnable = async () => {
-  //   try {
-  //     requestPermission()
-  //     console.log(' i am here1')
-  //     if (status.granted === true) {
-  //       let location = await Location.hasServicesEnabledAsync({});
-  //       if (location === true) {
-  //         let location = await Location.getCurrentPositionAsync({});
-  //         setLocation(location);
-  //         setIsLocationModalVisible(false);
-  //       }
-  //       return;
-  //     }
-  //   } catch (error) {
-  //     if (status.granted === false) {
-  //       setbuttonLocationDisabled(true)
-  //       setIsLocationModalVisible(true);
-  //     }
-  //   }
-  // };
-
-  const LocationCheck = async () => {
-    // console.log(' i am here2')
-    // await requestPermission()
-    // // console.log(status)
-    // // if (status === null) {
-    // //   console.log("status is null")
-    // // }
-    // if (status?.granted === false) {
-    //   setbuttonLocationDisabled(true)
-    //   setIsLocationModalVisible(true);
-    // }
-  };
 
   const openSettings = () => {
     if (Platform.OS == 'ios') {
@@ -225,7 +159,7 @@ const LocationServicesScreen = ({ navigation }) => {
 
   return (
     <>
-      <NavigationEvents onWillFocus={() => { _getLocationAsync() }} />
+      <NavigationEvents onWillFocus={() => { }} />
       <View style={styles.container}>
         <Modal
           animationType="slide"

@@ -20,6 +20,8 @@
     "expo-background-fetch": "~10.1.0",
     "expo-constants": "~13.0.0",
     "expo-dev-client": "~0.8.0",
+    "expo-device": "~4.1.0",
+    "expo-intent-launcher": "~10.1.0",
     "expo-location": "~14.0.1",
     "expo-network": "~4.1.0",
     "expo-notifications": "~0.14.0",
@@ -35,6 +37,7 @@
     "react-native-progress-circle": "^2.1.0",
     "react-native-push-notification": "^7.4.0",
     "react-native-range-slider-expo": "^1.4.1",
+    "react-native-reanimated": "~1.13.0",
     "react-native-responsive-linechart": "^5.7.1",
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "~3.10.1",
@@ -42,13 +45,11 @@
     "react-native-vector-icons": "^8.1.0",
     "react-native-web": "0.17.1",
     "react-native-webview": "11.15.0",
+    "react-native-wifi-reborn": "^4.5.0",
     "react-navigation": "^4.4.4",
     "react-navigation-stack": "^2.10.4",
     "react-navigation-tabs": "^2.11.1",
-    "socket.io-client": "^4.1.2",
-    "expo-intent-launcher": "~10.1.0",
-    "expo-device": "~4.1.0",
-    "react-native-reanimated": "~1.13.0"
+    "socket.io-client": "^4.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"
